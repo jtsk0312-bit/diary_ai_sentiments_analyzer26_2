@@ -1,14 +1,13 @@
 import { NextRequest, NextResponse } from "next/server";
 
-export async function GET(req: NextRequest) {
-  const scriptUrl = process.env.NEXT_PUBLIC_GOOGLE_SCRIPT_URL;
+const DEFAULT_SCRIPT_URL =
+  "https://script.google.com/macros/s/AKfycbyhgrHUJSvuPhXb3ZSBUkQ6-pJ7Z9qqyWaB4zK5P7gi4bNMETP9TopVCHXyk-9ihNd9XA/exec";
 
-  if (!scriptUrl) {
-    return NextResponse.json(
-      { success: false, error: ".env.local에 NEXT_PUBLIC_GOOGLE_SCRIPT_URL이 설정되지 않았습니다." },
-      { status: 400 }
-    );
-  }
+export async function GET(req: NextRequest) {
+  const scriptUrl =
+    process.env.NEXT_PUBLIC_GOOGLE_SCRIPT_URL ||
+    process.env.GOOGLE_SCRIPT_URL ||
+    DEFAULT_SCRIPT_URL;
 
   try {
     const { searchParams } = new URL(req.url);
@@ -41,14 +40,10 @@ export async function GET(req: NextRequest) {
 }
 
 export async function POST(req: NextRequest) {
-  const scriptUrl = process.env.NEXT_PUBLIC_GOOGLE_SCRIPT_URL;
-
-  if (!scriptUrl) {
-    return NextResponse.json(
-      { success: false, error: ".env.local에 NEXT_PUBLIC_GOOGLE_SCRIPT_URL이 설정되지 않았습니다." },
-      { status: 400 }
-    );
-  }
+  const scriptUrl =
+    process.env.NEXT_PUBLIC_GOOGLE_SCRIPT_URL ||
+    process.env.GOOGLE_SCRIPT_URL ||
+    DEFAULT_SCRIPT_URL;
 
   try {
     const body = await req.json();
